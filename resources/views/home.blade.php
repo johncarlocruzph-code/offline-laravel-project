@@ -1,46 +1,45 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Offline Lost and Found</title>
+@extends('layouts.app')
 
+@section('title', 'Home')
+
+@section('content')
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f3f4f6;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 80%;
-            max-width: 700px;
-            margin: 80px auto;
+        .home-card {
             background: white;
             padding: 40px;
             text-align: center;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            margin-top: 40px;
         }
 
-        .icon {
+        .home-card .icon {
             font-size: 55px;
         }
 
-        h1 {
+        .home-card h1 {
             color: #1f2937;
         }
 
-        .tagline {
+        .home-card .tagline {
             color: #555;
             font-size: 18px;
         }
 
-        .info {
+        .home-card .info {
             margin-top: 25px;
             color: #777;
         }
 
-        a {
+        .home-card .step {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin: 8px 0;
+            color: #374151;
+        }
+
+        .home-card .btn {
             display: inline-block;
             margin-top: 20px;
             padding: 10px 20px;
@@ -50,33 +49,42 @@
             border-radius: 8px;
         }
 
-        a:hover {
+        .home-card .btn:hover {
             background: #374151;
         }
     </style>
-</head>
 
-<body>
+    @php
+        $hour = (int) date('G');
+        $steps = [
+            'Open the items list.',
+            'Check if your lost item is already there.',
+            'Open the item to see where it was found.',
+        ];
+    @endphp
 
-    <div class="container">
-
+    <div class="home-card">
         <div class="icon">🔎</div>
 
         <h1>{{ $appName }}</h1>
 
         <p class="tagline">{!! $tagline !!}</p>
 
-        <p class="info">
-            Today is {{ date('F j, Y') }}.
-        </p>
+        @if ($hour < 12)
+            <p>Good morning!</p>
+        @elseif ($hour < 18)
+            <p>Good afternoon!</p>
+        @else
+            <p>Good evening!</p>
+        @endif
 
-        <p class="info">
-            The current UNIX timestamp is {{ time() }}.
-        </p>
+        <p class="info">Today is {{ date('F j, Y') }}.</p>
 
-        <a href="/user/Michelle">View Greeting</a>
+        <h3>How it works</h3>
+        @for ($i = 0; $i < 3; $i++)
+            <div class="step">Step {{ $i + 1 }}: {{ $steps[$i] }}</div>
+        @endfor
 
+        <a class="btn" href="/user/Michelle">View Greeting</a>
     </div>
-
-</body>
-</html>
+@endsection

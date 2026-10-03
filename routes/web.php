@@ -7,9 +7,12 @@ Route::get('/welcome', function () {
 });
 
 Route::get('/', function () {
-    return 'Welcome to the Offline Lost and Found app!';
+    return view('home', [
+        'appName' => 'Offline Lost and Found',
+        'tagline' => 'Find what you <strong>lost</strong>. Return what you <strong>found</strong>.',
+    ]);
 });
 
 Route::get('/user/{name}', function (string $name) {
-    return 'Hello ' . $name . '!';
+    return view('greeting', ['name' => $name]);
 });

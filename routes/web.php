@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/welcome', function () {
@@ -20,3 +21,6 @@ Route::get('/user/{name}', function (string $name) {
 Route::get('/about', function () {
     return view('about');
 });
+
+Route::get('/items', [ItemController::class, 'index']);
+Route::get('/items/{id}', [ItemController::class, 'show']);

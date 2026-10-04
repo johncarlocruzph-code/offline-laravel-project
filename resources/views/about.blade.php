@@ -9,11 +9,13 @@
     @php
         $group = 'Group 2';
         $members = [
+            'John Carlo Cruz',
+            'Dave Nino Edison Lato',
             'Francis Lawas',
             'Michelle Amor Calzada',
             'Joseph Tano',
-            'Dave Nino Edison Lato',
-            'John Carlo Cruz',
+            
+            
         ];
     @endphp
 

@@ -6,6 +6,30 @@
     <h1>Lost and Found Items</h1>
     <p>Total items: {{ $items->count() }}</p>
 
+    @php
+        $lostCount = 0;
+        $foundCount = 0;
+        $claimedCount = 0;
+
+        foreach ($items as $item) {
+            if ($item->status === 'lost') {
+                $lostCount++;
+            } elseif ($item->status === 'found') {
+                $foundCount++;
+            } else {
+                $claimedCount++;
+            }
+        }
+    @endphp
+
+    <p>
+        <span class="badge lost">LOST</span> {{ $lostCount }}
+        <span class="badge found">FOUND</span> {{ $foundCount }}
+        <span class="badge claimed">CLAIMED</span> {{ $claimedCount }}
+    </p>
+
+    <p><a class="btn" href="/items/create">Add New Item</a></p>
+
     @if ($firstItem)
         <p>First reported item: <strong>{{ $firstItem->name }}</strong></p>
     @endif

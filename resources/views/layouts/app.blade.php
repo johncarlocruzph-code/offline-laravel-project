@@ -14,6 +14,7 @@
         .badge { padding: 3px 10px; border-radius: 12px; color: #fff; font-size: 12px; font-weight: bold; }
         .lost { background: #d64545; }
         .found { background: #2e9e5b; }
+        .claimed { background: #6b7280; }
     </style>
 </head>
 <body>

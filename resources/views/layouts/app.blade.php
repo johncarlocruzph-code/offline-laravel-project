@@ -15,6 +15,9 @@
         .lost { background: #d64545; }
         .found { background: #2e9e5b; }
         .claimed { background: #6b7280; }
+        input, select { padding: 8px; margin: 4px 0 12px; width: 100%; box-sizing: border-box; }
+        button, .btn { padding: 8px 16px; background: #1f2937; color: #fff; border: 0; border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn-danger { background: #d64545; }
     </style>
 </head>
 <body>

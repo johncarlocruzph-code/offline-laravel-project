@@ -19,13 +19,5 @@
         <p>Reported on: {{ $item->created_at }}</p>
     </div>
 
-    <p><a class="btn" href="/items/{{ $item->id }}/edit">Change Status</a></p>
-
-    <form method="POST" action="/items/{{ $item->id }}">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn-danger" onclick="return confirm('Delete this item?')">Delete Item</button>
-    </form>
-
     <p><a href="/items">Back to all items</a></p>
 @endsection

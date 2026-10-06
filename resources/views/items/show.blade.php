@@ -3,20 +3,22 @@
 @section('title', $item->name)
 
 @section('content')
-    <h1>{{ $item->name }}</h1>
+    <div class="page-header">
+        <h1>{{ $item->name }}</h1>
 
-    @if ($item->status === 'lost')
-        <span class="badge lost">LOST</span>
-    @elseif ($item->status === 'found')
-        <span class="badge found">FOUND</span>
-    @else
-        <span class="badge claimed">CLAIMED</span>
-    @endif
+        @if ($item->status === 'lost')
+            <span class="badge lost">LOST</span>
+        @elseif ($item->status === 'found')
+            <span class="badge found">FOUND</span>
+        @else
+            <span class="badge claimed">CLAIMED</span>
+        @endif
+    </div>
 
     <div class="card">
         <p>{{ $item->description }}</p>
-        <p>Location: {{ $item->location }}</p>
-        <p>Reported on: {{ $item->created_at }}</p>
+        <p>📍 Location: {{ $item->location }}</p>
+        <p class="muted">Reported on: {{ $item->created_at }}</p>
     </div>
 
     <p><a class="btn" href="/items/{{ $item->id }}/edit">Change Status</a></p>

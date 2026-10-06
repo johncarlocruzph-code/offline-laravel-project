@@ -3,9 +3,6 @@
 @section('title', 'All Items')
 
 @section('content')
-    <h1>Lost and Found Items</h1>
-    <p>Total items: {{ $items->count() }}</p>
-
     @php
         $lostCount = 0;
         $foundCount = 0;
@@ -22,25 +19,36 @@
         }
     @endphp
 
-    <p>
-        <span class="badge lost">LOST</span> {{ $lostCount }}
-        <span class="badge found">FOUND</span> {{ $foundCount }}
-        <span class="badge claimed">CLAIMED</span> {{ $claimedCount }}
-    </p>
+    <div class="page-header">
+        <h1>Lost and Found Items</h1>
+        <a class="btn" href="/items/create">+ Add New Item</a>
+    </div>
 
-    <p><a class="btn" href="/items/create">Add New Item</a></p>
+    <p class="muted">Total items: {{ $items->count() }}</p>
 
-    @if ($firstItem)
-        <p>First reported item: <strong>{{ $firstItem->name }}</strong></p>
-    @endif
+    <div class="stats">
+        <div class="stat">
+            <div class="number">{{ $lostCount }}</div>
+            <span class="badge lost">LOST</span>
+        </div>
+        <div class="stat">
+            <div class="number">{{ $foundCount }}</div>
+            <span class="badge found">FOUND</span>
+        </div>
+        <div class="stat">
+            <div class="number">{{ $claimedCount }}</div>
+            <span class="badge claimed">CLAIMED</span>
+        </div>
+    </div>
 
     @if ($items->isEmpty())
-        <div class="card">No items reported yet.</div>
+        <div class="card">
+            No items reported yet. <a href="/items/create">Report the first item</a>
+        </div>
     @else
-        @foreach ($items as $item)
-            <div class="card">
-                <h3>
-                    {{ $item->name }}
+        <div class="grid">
+            @foreach ($items as $item)
+                <div class="item-card">
                     @if ($item->status === 'lost')
                         <span class="badge lost">LOST</span>
                     @elseif ($item->status === 'found')
@@ -48,11 +56,13 @@
                     @else
                         <span class="badge claimed">CLAIMED</span>
                     @endif
-                </h3>
-                <p>{{ $item->description }}</p>
-                <p>Location: {{ $item->location }}</p>
-                <a href="/items/{{ $item->id }}">View details</a>
-            </div>
-        @endforeach
+
+                    <h3>{{ $item->name }}</h3>
+                    <p>{{ $item->description }}</p>
+                    <p>📍 {{ $item->location }}</p>
+                    <p><a class="btn" href="/items/{{ $item->id }}">View details</a></p>
+                </div>
+            @endforeach
+        </div>
     @endif
 @endsection

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ItemController;
+use App\Models\Item;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/welcome', function () {
@@ -11,6 +12,7 @@ Route::get('/', function () {
     return view('home', [
         'appName' => 'Offline Lost and Found',
         'tagline' => 'Find what you <strong>lost</strong>. Return what you <strong>found</strong>.',
+        'items' => Item::all(),
     ]);
 });
 

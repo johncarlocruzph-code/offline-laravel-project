@@ -10,23 +10,29 @@ class ItemController extends Controller
     // Read: show all items
     public function index()
     {
-        $items = Item::all();
-        $firstItem = Item::first();
+        return view('items.index', [
+            'items' => Item::all(),
+            'filter' => 'all',
+        ]);
+    }
+
+    // Read: show only the items of one status (lost, found or claimed)
+    public function filter($status)
+    {
+        if (! in_array($status, Item::VALID_STATUSES, true)) {
+            abort(404);
+        }
 
         return view('items.index', [
-            'items' => $items,
-            'firstItem' => $firstItem,
+            'items' => Item::all(),
+            'filter' => $status,
         ]);
     }
 
     // Read: show one item
     public function show($id)
     {
-        $item = Item::find($id);
-
-        if ($item === null) {
-            return 'Item not found.';
-        }
+        $item = Item::findOrFail($id);
 
         return view('items.show', ['item' => $item]);
     }
@@ -40,12 +46,14 @@ class ItemController extends Controller
     // Create: save the new item
     public function store(Request $request)
     {
-        Item::create([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'location' => $request->input('location'),
-            'status' => $request->input('status'),
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:255'],
+            'location' => ['required', 'string', 'max:255'],
+            'status' => ['required', 'in:lost,found,claimed'],
         ]);
+
+        Item::create($validated);
 
         return redirect('/items');
     }
@@ -53,11 +61,7 @@ class ItemController extends Controller
     // Update: show the change status page
     public function edit($id)
     {
-        $item = Item::find($id);
-
-        if ($item === null) {
-            return 'Item not found.';
-        }
+        $item = Item::findOrFail($id);
 
         return view('items.edit', ['item' => $item]);
     }
@@ -65,11 +69,11 @@ class ItemController extends Controller
     // Update: save the new status
     public function update(Request $request, $id)
     {
-        $item = Item::find($id);
+        $item = Item::findOrFail($id);
 
-        if ($item === null) {
-            return 'Item not found.';
-        }
+        $request->validate([
+            'status' => ['required', 'in:lost,found,claimed'],
+        ]);
 
         $item->update(['status' => $request->input('status')]);
 
@@ -79,11 +83,8 @@ class ItemController extends Controller
     // Delete: remove the item
     public function destroy($id)
     {
-        $item = Item::find($id);
-
-        if ($item !== null) {
-            $item->delete();
-        }
+        $item = Item::findOrFail($id);
+        $item->delete();
 
         return redirect('/items');
     }

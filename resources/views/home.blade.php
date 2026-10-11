@@ -5,8 +5,8 @@
 @section('content')
     <style>
         .hero {
-            background: #1f3a5f;
-            color: #fff;
+            background: #2563eb;
+            color: #ffffff;
             padding: 50px 30px;
             border-radius: 15px;
             text-align: center;
@@ -14,47 +14,36 @@
         }
 
         .hero h1 {
+            color: #ffffff;
             margin: 0 0 10px;
-            font-size: 36px;
+            font-size: 38px;
         }
 
         .hero .tagline {
-            font-size: 18px;
+            color: #eef4ff;
+            font-size: 20px;
             margin-bottom: 25px;
         }
 
         .hero .btn {
             margin: 5px;
-            background: #fff;
-            color: #1f3a5f;
+            background: #ffffff;
+            color: #1e3a8a;
             font-weight: bold;
+        }
+
+        .hero .btn:hover {
+            background: #e5edff;
         }
 
         .hero .btn-outline {
             background: transparent;
-            color: #fff;
-            border: 2px solid #fff;
+            color: #ffffff;
+            border: 2px solid #ffffff;
         }
 
-        .stats {
-            display: flex;
-            gap: 12px;
-            margin: 25px 0;
-        }
-
-        .stat {
-            flex: 1;
-            background: #fff;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-        }
-
-        .stat .number {
-            font-size: 34px;
-            font-weight: bold;
-            margin-bottom: 8px;
+        .hero .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .features {
@@ -64,10 +53,20 @@
 
         .feature {
             flex: 1;
-            background: #fff;
+            background: #ffffff;
             border-radius: 12px;
             padding: 18px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature h3 {
+            margin-top: 0;
+        }
+
+        @media (max-width: 600px) {
+            .features {
+                flex-direction: column;
+            }
         }
     </style>
 
@@ -77,13 +76,14 @@
         $claimedCount = 0;
 
         foreach ($items as $item) {
-            if ($item->status === 'lost') {
-                $lostCount++;
-            } elseif ($item->status === 'found') {
-                $foundCount++;
-            } else {
-                $claimedCount++;
-            }
+            $status = $item->status ?? 'claimed';
+
+            match ($status) {
+                'lost' => $lostCount++,
+                'found' => $foundCount++,
+                'claimed' => $claimedCount++,
+                default => $claimedCount++,
+            };
         }
 
         $features = [

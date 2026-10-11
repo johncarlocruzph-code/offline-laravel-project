@@ -4,10 +4,6 @@ use App\Http\Controllers\ItemController;
 use App\Models\Item;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/welcome', function () {
-    return 'Welcome to our website!';
-});
-
 Route::get('/', function () {
     return view('home', [
         'appName' => 'Offline Lost and Found',
@@ -16,15 +12,12 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/user/{name}', function (string $name) {
-    return view('greeting', ['name' => $name]);
-});
-
 Route::get('/about', function () {
     return view('about');
 });
 
 Route::get('/items', [ItemController::class, 'index']);
+Route::get('/items/status/{status}', [ItemController::class, 'filter']);
 Route::get('/items/create', [ItemController::class, 'create']);
 Route::post('/items', [ItemController::class, 'store']);
 Route::get('/items/{id}', [ItemController::class, 'show']);

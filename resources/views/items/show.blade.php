@@ -3,16 +3,15 @@
 @section('title', $item->name)
 
 @section('content')
+    @php
+        $status = $item->status ?? 'claimed';
+        $badgeClass = in_array($status, ['lost', 'found', 'claimed'], true) ? $status : 'claimed';
+    @endphp
+
     <div class="page-header">
         <h1>{{ $item->name }}</h1>
 
-        @if ($item->status === 'lost')
-            <span class="badge lost">LOST</span>
-        @elseif ($item->status === 'found')
-            <span class="badge found">FOUND</span>
-        @else
-            <span class="badge claimed">CLAIMED</span>
-        @endif
+        <span class="badge {{ $badgeClass }}">{{ strtoupper($badgeClass) }}</span>
     </div>
 
     <div class="card">

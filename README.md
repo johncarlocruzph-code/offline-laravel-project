@@ -1,58 +1,254 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Offline Lost and Found
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A lightweight Laravel web application for managing lost and found items in a local, offline-friendly environment. The app allows users to report missing or found items, browse them by status, update their state, and remove outdated records.
 
-## About Laravel
+It is built as a simple CRUD system using Laravel 13, SQLite, Blade templates, and a custom front-end layout.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Overview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This project is designed for small communities, offices, schools, or local organizations that need a simple lost-and-found list without depending on an external database or cloud service.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Users can:
 
-## Learning Laravel
+- add new lost or found items
+- view every item in a central list
+- filter items by status
+- update an item from lost to found to claimed
+- delete records when they are no longer needed
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Features
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Local-first data storage using SQLite
+- Status tracking for:
+  - lost
+  - found
+  - claimed
+- Dashboard-style homepage with summary counters
+- Filtered item views by item state
+- Responsive UI built with Blade templates and custom CSS
+- CRUD routes for creating, viewing, editing, and deleting items
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Tech Stack
 
-## Agentic Development
+- PHP 8.3
+- Laravel 13
+- SQLite database
+- Blade templating
+- Vite + Node.js for front-end asset building
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Project Structure
 
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```text
+.
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       └── ItemController.php
+│   ├── Models/
+│   │   └── Item.php
+│   └── Providers/
+├── bootstrap/
+├── config/
+├── database/
+│   ├── database.sqlite
+│   ├── migrations/
+│   │   └── 2026_10_05_033833_create_items_table.php
+│   └── seeders/
+├── public/
+├── resources/
+│   ├── css/
+│   ├── js/
+│   └── views/
+│       ├── items/
+│       ├── layouts/
+│       └── partials/
+├── routes/
+│   └── web.php
+├── tests/
+├── .env.example
+├── composer.json
+├── package.json
+├── vite.config.js
+├── artisan
+├── phpunit.xml
+└── README.md
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Application Flow
 
-## Contributing
+The project revolves around the `Item` model:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- a user reports an item from the create form
+- the data is validated and saved to the `items` table
+- items are shown on the home and items pages
+- the status can be changed through the edit screen
+- each item can be deleted from its details page
 
-## Code of Conduct
+## Data Model
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+The `items` table includes:
 
-## Security Vulnerabilities
+| Column | Type | Description |
+| --- | --- | --- |
+| id | bigint | Auto-increment primary key |
+| name | string | Item name |
+| description | string | Short detail about the item |
+| location | string | Where it was found or lost |
+| status | string | lost, found, or claimed |
+| created_at | timestamp | Record creation time |
+| updated_at | timestamp | Last update time |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Routes
+
+| Route | Method | Purpose |
+| --- | --- | --- |
+| `/` | GET | Homepage with summary counts |
+| `/about` | GET | About page |
+| `/items` | GET | List all items |
+| `/items/status/{status}` | GET | Filter items by status |
+| `/items/create` | GET | Show create form |
+| `/items` | POST | Save new item |
+| `/items/{id}` | GET | Show item details |
+| `/items/{id}/edit` | GET | Show status update form |
+| `/items/{id}` | PUT | Update an item status |
+| `/items/{id}` | DELETE | Remove an item |
+
+## Requirements
+
+Before starting, make sure you have:
+
+- PHP 8.3 or newer
+- Composer
+- Node.js and npm
+- A local terminal or command prompt
+
+## Installation
+
+### Option 1: Manual setup
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/johncarlocruzph-code/offline-laravel-project.git
+cd offline-laravel-project
+```
+
+2. Install PHP dependencies:
+
+```bash
+composer install
+```
+
+3. Copy the environment file:
+
+```bash
+cp .env.example .env
+```
+
+4. Generate the application key:
+
+```bash
+php artisan key:generate
+```
+
+5. Make sure the SQLite database file exists:
+
+```bash
+touch database/database.sqlite
+```
+
+6. Run the database migrations:
+
+```bash
+php artisan migrate
+```
+
+7. Install front-end dependencies and build assets:
+
+```bash
+npm install
+npm run build
+```
+
+8. Start the local development server:
+
+```bash
+php artisan serve
+```
+
+9. Open your browser at:
+
+```text
+http://localhost:8000
+```
+
+### Option 2: One-command setup
+
+This project includes a Composer setup script that performs the main installation steps automatically:
+
+```bash
+composer run setup
+```
+
+This script runs the following actions:
+
+- installs Composer dependencies
+- creates `.env` if missing
+- generates the Laravel app key
+- runs migrations
+- installs npm packages
+- builds Vite assets
+
+## Running the App
+
+Use the development server when working locally:
+
+```bash
+php artisan serve
+```
+
+For asset hot reloading during front-end work:
+
+```bash
+npm run dev
+```
+
+## Common Commands
+
+```bash
+php artisan migrate
+php artisan migrate:fresh
+php artisan route:list
+php artisan test
+```
+
+## How the App Works
+
+1. A user opens the homepage and sees the total counts for lost, found, and claimed items.
+2. They choose to report a new item.
+3. The system validates key information such as name, description, location, and item status.
+4. The item is stored in the SQLite database.
+5. The item appears in the item list and can be filtered by category.
+6. The item status can be updated over time until the record is resolved.
+
+## Notes
+
+- The application is intentionally simple and local-first.
+- It does not include authentication or user accounts.
+- It is suitable for a small offline environment or demo project.
+- The database is SQLite, which keeps setup simple and portable.
+
+## Customization Ideas
+
+You can extend the app by adding:
+
+- item photos
+- search by keyword
+- user authentication
+- admin-only moderation
+- export to CSV
+- email notifications for status changes
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-source and uses the MIT license.

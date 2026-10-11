@@ -12,7 +12,7 @@
 
         $technologies = ['Laravel 13', 'Blade templates', 'SQLite database', 'MVC structure'];
 
-        $group = 'Group 2';
+        $group = 'El Barako Group 2';
         $members = [
             ['name' => 'Francis Lawas', 'role' => 'Routes, Item model and migration'],
             ['name' => 'Michelle Amor Calzada', 'role' => 'Home and item pages'],
